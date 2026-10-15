@@ -1,92 +1,78 @@
-# Day 13 – First TFLite Micro Inference on ESP32
+# ESP32 TFLite Micro Inference
 
 ## Overview
 
-This project implements the first TinyML inference experiment on an ESP32 using TensorFlow Lite for Microcontrollers.
+This project demonstrates TinyML inference on an ESP32 using TensorFlow Lite for Microcontrollers (TFLite Micro). It explores deploying a lightweight machine learning model on a resource-constrained microcontroller and performing inference locally.
 
-A small neural network is trained in Python to classify normalized light-level readings into three categories: **Dark, Normal, and Bright**. The trained model is converted into TensorFlow Lite format, embedded in the ESP32 firmware, and used to predict the class of a hardcoded input value.
+This repository is being used for **Day 13 – First TFLite Micro Inference** of the AUTOMATRIX Build-A-Thon, SIG 03, Department of Computer Science and Business Systems, Ramco Institute of Technology.
 
 ## Objective
 
-- Train a small classification model.
-- Convert the trained model into `.tflite` format.
-- Embed the model in the ESP32 program.
-- Run on-device inference using a hardcoded sample value.
-- Display the predicted class on the Serial Monitor.
+- Deploy a small TensorFlow Lite model on an ESP32.
+- Perform inference using a hardcoded sample input.
+- Identify the predicted class from the model output.
+- Display the prediction through the Serial Monitor.
 
 ## Technologies Used
 
-- ESP32 development board
-- Arduino IDE
-- Python
-- TensorFlow / Keras
-- TensorFlow Lite
+- ESP32
 - TensorFlow Lite for Microcontrollers
-- Google Colab
+- TensorFlow / Keras
+- Python
+- Arduino IDE / compatible embedded development environment
 
-## Model Details
+## Day 13 – First TFLite Micro Inference
 
-- **Input:** Normalized light-level value between 0 and 1
-- **Hidden layer:** 8 neurons with ReLU activation
-- **Output layer:** 3 neurons with Softmax activation
-- **Classes:** Dark, Normal, Bright
-- **Sample input:** 0.20
+### Problem Statement
 
-The model is trained using synthetic sample data with labels assigned according to predefined ranges.
+Deploy a small pretrained or trained `.tflite` model onto the ESP32 using TensorFlow Lite for Microcontrollers. Run inference on a hardcoded sample value and print the predicted class.
 
-## Classification Ranges
+### Implementation
 
-| Normalized input | Class |
-|---|---|
-| Below 0.33 | Dark |
-| 0.33 to below 0.66 | Normal |
-| 0.66 to 1.00 | Bright |
+The demonstration uses a lightweight light-level classification model with three output classes:
 
-These ranges describe the training labels. Actual model predictions should be validated against the trained model's output.
+- **Dark**
+- **Normal**
+- **Bright**
 
-## Project Workflow
+A sample input is supplied directly to the model. The inference runtime processes the input and produces output scores for the three classes. The class with the highest output score is selected as the prediction.
 
-1. Generate sample light-level data in Python.
-2. Train a small neural network using TensorFlow.
-3. Convert the trained model to TensorFlow Lite.
-4. Export the model as a C++ header file.
-5. Load the embedded model on the ESP32.
-6. Allocate the input and output tensors.
-7. Run inference using a hardcoded input value.
-8. Print the predicted class to the Serial Monitor.
+### Workflow
 
-## Project Files
+1. Prepare or train a small machine learning model.
+2. Convert the model into TensorFlow Lite format.
+3. Embed the model in the ESP32 firmware.
+4. Initialize the TensorFlow Lite Micro interpreter.
+5. Allocate memory for the model's tensors.
+6. Supply a hardcoded input value.
+7. Execute inference on the ESP32.
+8. Print the predicted class on the Serial Monitor.
 
-- `Day13_TFLite_Inference.ino` – ESP32 inference program.
-- `model_data.h` – Embedded TensorFlow Lite model.
-- `Day13_TFLite_Model.ipynb` – Model training and conversion notebook.
-- `screenshots/` – Actual compilation and inference evidence.
+### Expected Output
 
-## How to Run
+For a normalized sample input of `0.20`, the expected classification is `Dark`, provided the trained model produces the expected output.
 
-1. Train and convert the model using Google Colab.
-2. Download `model_data.h`.
-3. Install compatible ESP32 board support and TensorFlow Lite Micro dependencies.
-4. Open the Arduino sketch.
-5. Select the correct ESP32 board and COM port.
-6. Compile and upload the program.
-7. Open the Serial Monitor at 115200 baud.
-8. Observe the input value and predicted class.
+```text
+Day 13: First TFLite Micro Inference
+Input value: 0.20
+Predicted class: Dark
+Inference completed.
+```
 
-## Expected Result
+*Note: This is an illustrative expected output. Actual execution must be verified on the target device.*
 
-For a hardcoded input of `0.20`, the expected class is `Dark`.
+## Learning Outcomes
 
-The actual prediction and successful hardware execution must be confirmed using the Serial Monitor.
+- Understanding TinyML and on-device machine learning.
+- Learning the TensorFlow Lite model deployment workflow.
+- Understanding input tensors, output tensors, and inference.
+- Exploring machine learning on resource-constrained embedded devices.
 
-## Learning Outcome
+## Future Enhancements
 
-This experiment demonstrates the basic TinyML deployment workflow: training a model, converting it to a microcontroller-compatible format, embedding the model, and executing inference locally on an ESP32.
+- Integrate an LDR sensor for real-time light-level readings.
+- Display the predicted classification on an OLED.
+- Control an LED based on the predicted light level.
+- Integrate Wi-Fi connectivity and a live monitoring dashboard.
 
-## Future Scope
 
-The model can be extended to classify live LDR sensor readings and display the classification on an OLED in Day 14. Further integration with Wi-Fi and automatic LED control can be explored in Day 15.
-
-## Note
-
-The model uses synthetic training data and predefined class ranges. It is an educational prototype, not a calibrated light-measurement system.
